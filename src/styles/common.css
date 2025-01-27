@@ -189,6 +189,22 @@ input[type="radio"]::before {
     transform: scale(0);
 }
 
+input[type="radio"].wrong-answer {
+    border-color: red;
+}
+
+input[type="radio"].wrong-answer::before {
+    box-shadow: inset 10px 10px red;
+}
+
+input[type="radio"].right-answer {
+    border-color: #13ba13;
+}
+
+input[type="radio"].right-answer::before {
+    box-shadow: inset 10px 10px #13ba13;
+}
+
 input[type="radio"]:checked::before {
     transform: scale(1);
 }

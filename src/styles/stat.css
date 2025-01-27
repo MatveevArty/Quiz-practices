@@ -49,3 +49,8 @@
 .stat-question-options {
     margin-top: 40px;
 }
+
+.stat-question-option label {
+    cursor: unset;
+}
+

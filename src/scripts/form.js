@@ -28,6 +28,8 @@
             },
         ],
         init () {
+
+            getTrueYear(); // Текущий год в футере
             checkStart(); // Проверяем клик на первой странице
             deleteSessionStorage(); // Обнуляем sessionStorage при клике на лого и возращении на главную
 

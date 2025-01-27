@@ -2,6 +2,7 @@
     const Result = {
         init() {
 
+            getTrueYear(); // Текущий год в футере
             checkStart(); // Проверяем клик на первой странице
             checkUserData(); // Проверяем введение данных пользователем на form.html
             deleteSessionStorage(); // Обнуляем sessionStorage при клике на лого и возращении на главную

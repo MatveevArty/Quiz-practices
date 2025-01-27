@@ -24,3 +24,10 @@ function deleteSessionStorage() {
         sessionStorage.clear();
     }
 }
+
+function getTrueYear() {
+    let today  = new Date();
+    let todayYear = today.getFullYear();
+
+    const footerDate = document.querySelector('.footer > span').innerText = todayYear;
+}
