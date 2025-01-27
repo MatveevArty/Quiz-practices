@@ -16,3 +16,11 @@ function checkStart() {
         location.href = 'index.html';
     }
 }
+
+function deleteSessionStorage() {
+    const logoBtn = document.getElementById('logo');
+
+    logoBtn.onclick = function () {
+        sessionStorage.clear();
+    }
+}
