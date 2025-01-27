@@ -100,6 +100,9 @@
         },
 
         showQuestion() {
+            // Отображаем кнопку Пропустить вопрос
+            this.passButtonElement.style.display = 'flex';
+
             // Определение индекса текущего вопроса и назначение это в переменную
             const activeQuestion = this.quiz.questions[this.currentQuestionIndex - 1];
             // Вписание текста вопроса с бэкенда в элемент заголовка
@@ -129,14 +132,16 @@
                 inputElement.setAttribute('name', 'answer');
                 inputElement.setAttribute('value', answer.id);
 
-                // Отображаем возможно выбранный ранее радио-инпут ответа
+                // Отображаем возможно выбранный ранее радио-инпут ответа и скрываем кнопку Пропустить вопрос
                 if (chosenOption && chosenOption.chosenAnswerId === answer.id) {
                     inputElement.setAttribute('checked', 'checked');
+                    this.passButtonElement.style.display = 'none';
                 }
 
-                // Раздизейбл кнопки Далее при выборе радио-инпута
+                // Раздизейбл кнопки Далее и скрытие кнопки Пропустить вопрос при выборе радио-инпута
                 inputElement.onchange = function() {
                     that.chooseAnswer();
+                    that.passButtonElement.style.display = 'none';
                 }
 
                 const labelElement = document.createElement('label');
