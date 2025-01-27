@@ -184,6 +184,8 @@
         },
 
         move(action) {
+            const that = this;
+
             const activeQuestion = this.quiz.questions[this.currentQuestionIndex - 1];
             // Нахождение выбранного радио-инпута с ответом
             const chosenAnswer =
@@ -227,12 +229,17 @@
             Array.from(this.progressbarElement.children).forEach((item, index) => {
                 const currentItemIndex = index + 1;
                 item.classList.remove('question-complete');
+                item.classList.remove('question-passed');
                 item.classList.remove('question-active');
 
                 if (currentItemIndex === this.currentQuestionIndex) {
                     item.classList.add('question-active');
                 } else if (currentItemIndex < this.currentQuestionIndex) {
-                    item.classList.add('question-complete');
+                    if (that.userResult[index].chosenAnswerId) {
+                        item.classList.add('question-complete'); // Отображаем вопрос как завершённый, если chosenAnswerId не null
+                    } else {
+                        item.classList.add('question-passed'); // Отображаем вопрос как скипнутый, если chosenAnswerId: null
+                    }
                 }
             })
 

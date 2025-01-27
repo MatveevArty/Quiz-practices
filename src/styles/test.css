@@ -36,7 +36,8 @@
     top: 10px;
 }
 /* Палки прогресс-бара пройденных вопросов */
-.test-progress-item.question-complete:not(:last-child)::before {
+.test-progress-item.question-complete:not(:last-child)::before,
+.test-progress-item.question-passed:not(:last-child)::before {
     background-color: #6933DC;
 }
 /* Кружок на активном вопросе по центру серый */
@@ -57,7 +58,12 @@
     background-color: #6933DC;
 }
 
-.test-progress-item.question-active::after {
+.test-progress-item.question-passed .test-progress-item-circle {
+    background-color: #75737a;
+}
+
+.test-progress-item.question-active::after,
+.test-progress-item.question-passed::after {
     width: 14px;
     height: 14px;
     top: 12%;
