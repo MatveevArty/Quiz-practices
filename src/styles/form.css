@@ -63,6 +63,15 @@
     border-left: 5px solid #6933DC;
 }
 
+.error-empty, .error-message {
+    font-size: 12px;
+    line-height: 0.9;
+    color: #FF0000FF;
+    max-width: 100%;
+    position: absolute;
+    display: none;
+}
+
 .form-agree {
     font-size: 12px;
     line-height: 14px;

@@ -60,14 +60,27 @@
         },
 
         validateField(field, element) {
-            // Проверка, если значение инпута пустое или не соответствует регулярке, то
-            if (!element.value || !element.value.match(field.regex)) {
-                element.parentNode.style.borderColor = 'red'; // окрашивание рамки род блока в красный цвет
-                field.valid = false; // присвоение значения false для свойства valid у объекта массива fields
+
+            element.nextElementSibling.nextElementSibling.style.display = 'none'; // Сброс error empty
+            element.nextElementSibling.nextElementSibling.nextElementSibling.style.display = 'none'; // Сброс error empty
+
+            // Проверка, если значение инпута пустое
+            if (element.value) {
+                // Проверка, если значение инпута не соответствует регулярке
+                if (!element.value.match(field.regex)) {
+                    element.parentNode.style.borderColor = 'red'; // окрашивание рамки род блока в красный цвет
+                    element.nextElementSibling.nextElementSibling.nextElementSibling.style.display = 'block'; // Появление error message
+                    field.valid = false; // присвоение значения false для свойства valid у объекта массива fields
+                } else {
+                    element.parentNode.removeAttribute('style'); // красное окрашивание рамки исчезает
+                    field.valid = true;
+                }
             } else {
-                element.parentNode.removeAttribute('style');
-                field.valid = true;
+                element.parentNode.style.borderColor = 'red';
+                element.nextElementSibling.nextElementSibling.style.display = 'block'; // Появление error empty
+                field.valid = false;
             }
+
             // Инициализация функции validateForm после валидации инпутов для полноценной валидации формы
             this.validateForm();
         },
