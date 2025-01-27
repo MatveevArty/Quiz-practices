@@ -68,7 +68,9 @@
 
             // Таймер теста
             const timerElement = document.getElementById('test-timer-clock');
-            let seconds = 60;
+
+            let seconds = this.quiz.questions.length > 5 ? 90 : 60;
+
             const interval = setInterval(function() {
                 seconds--;
                 timerElement.innerText = seconds;
