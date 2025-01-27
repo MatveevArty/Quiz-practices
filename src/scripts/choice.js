@@ -4,7 +4,9 @@
         quizzes: [],
 
         init() {
-            checkUserData();
+
+            checkStart(); // Проверяем клик на первой странице
+            checkUserData(); // Проверяем введение данных пользователем на form.html
 
             // Отправка XMLHttp запроса на бэкенд для получения списка квизов
             const xhr = new XMLHttpRequest();
@@ -71,8 +73,11 @@
         chooseQuiz(element) {
             const dataId = element.getAttribute('data-id');
 
+            // Сохранение в sessionStorage id выбранного теста
+            sessionStorage.setItem('data-id', dataId);
+
             if (dataId) {
-                location.href = 'test.html' + location.search + '&id=' + dataId;
+                location.href = 'test.html';
             }
         }
     }

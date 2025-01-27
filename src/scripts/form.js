@@ -28,6 +28,8 @@
             },
         ],
         init () {
+            checkStart(); // Проверяем клик на первой странице
+
             const that = this; // Объявление константы для использования её ниже с целью "замыкания через другую переменную"
 
             // Нахождение каждого text инпута страницы на по id из свойства fields и их валидация по методу validateField
@@ -89,11 +91,11 @@
                 let paramString = '';
                 // Добавление в строку paramString значения свойства name и value каждого элемента массива fields
                 this.fields.forEach(item => {
-                    // Применение тернарного оператора для проверки на первый это элемент цикла или нет
-                    paramString += (!paramString ? '?' : '&') + item.name + '=' + item.element.value;
+                    // Сохранение в sessionStorage данных пользователя без лишних пробелов: name, lastName, email
+                    sessionStorage.setItem(item.name, item.element.value.trim());
                 });
 
-                location.href = 'choice.html' + paramString;
+                location.href = 'choice.html';
             }
         }
     };

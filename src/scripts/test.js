@@ -12,10 +12,11 @@
         userResult: [],
 
         init() {
-            // Проверка введённых данных методом checkUserData из common.js
-            checkUserData();
-            const url = new URL(location.href);
-            const testId = url.searchParams.get('id');
+
+            checkStart(); // Проверяем клик на первой странице
+            checkUserData(); // Проверяем введение данных пользователем на form.html
+
+            const testId = sessionStorage.getItem('data-id');
 
             // Отправка XMLHttp запроса на бэкенд при условии получения testId c пред страницы choice.html
             if (testId) {
@@ -231,11 +232,15 @@
         },
 
         complete() {
-            const url = new URL(location.href);
-            const id = url.searchParams.get('id');
-            const name = url.searchParams.get('name');
-            const lastName = url.searchParams.get('lastName');
-            const email = url.searchParams.get('email');
+            // Сохранение выбранных ответов в sessionStorage на момент завершения теста
+            sessionStorage.setItem('results', JSON.stringify(this.userResult));
+
+            const id = sessionStorage.getItem('data-id');
+            const name = sessionStorage.getItem('name');
+            const lastName = sessionStorage.getItem('lastName');
+            const email = sessionStorage.getItem('email');
+            const results = JSON.parse(sessionStorage.getItem('results'));
+
             const xhr = new XMLHttpRequest();
             xhr.open('POST', 'https://testologia.ru/pass-quiz?id=' + id, false);
 
@@ -245,7 +250,7 @@
                 name: name,
                 lastName: lastName,
                 email: email,
-                results: this.userResult
+                results: results
             }));
 
             if (xhr.status === 200 && xhr.responseText) {
@@ -256,8 +261,11 @@
                     location.href = 'index.html';
                 }
                 if (result) {
-                    console.log(result);
-                    location.href = 'result.html?score=' + result.score + '&total=' + result.total;
+                    location.href = 'result.html';
+
+                    // Сохранение в sessionStorage пришедших score и total с бэкенда
+                    sessionStorage.setItem('score', result.score);
+                    sessionStorage.setItem('total', result.total);
                 }
             } else {
                 location.href = 'index.html';
