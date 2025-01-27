@@ -1,5 +1,8 @@
 (function () {
     const Stat = {
+        name: null,
+        lastName: null,
+        email: null,
         quiz: null,
         rightAnswers: null,
         questionTitleElements: null,
@@ -13,6 +16,10 @@
             deleteSessionStorage(); // Обнуляем sessionStorage при клике на лого и возращении на главную
 
             this.userResult = JSON.parse(sessionStorage.getItem('results'));
+            this.name = JSON.stringify(sessionStorage.getItem('name')).replace(/"/g, "");
+            this.lastName = JSON.stringify(sessionStorage.getItem('lastName')).replace(/"/g, "");
+            this.email = JSON.stringify(sessionStorage.getItem('email')).replace(/"/g, "");
+
             const testId = sessionStorage.getItem('data-id');
 
             const xhr1= new XMLHttpRequest();
@@ -24,7 +31,6 @@
                 } catch (e) {
                     location.href = 'index.html';
                 }
-                console.log(this.rightAnswers);
             }
 
             const xhr2 = new XMLHttpRequest();
@@ -43,6 +49,9 @@
         },
 
         showPage() {
+
+            document.getElementById('stat-user').innerHTML = 'Тест выполнил <span>' + this.name + ' '
+                + this.lastName + ', ' + this.email + '</span>';
 
             // Присвоение названия проходимого теста в самом верху серыми буквами
             document.getElementById('stat-pre-title').innerText = this.quiz.name;
@@ -110,7 +119,6 @@
                     allInputs[i].setAttribute('checked', 'checked');
 
                     const isRight = this.rightAnswers.find(rightAnswer => rightAnswer === inputId);
-                    console.log(isRight);
 
                     if (isRight) {
                         allInputs[i].className = 'stat-question-option-input right-answer';

@@ -42,8 +42,26 @@
     color: #6933DC;
 }
 
+.stat-user {
+    margin-top: 10px;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+.stat-user span {
+    color: #6933DC;
+}
+
+.stat-questions {
+    margin-top: 60px;
+}
+
 .stat-question {
     margin-top: 60px;
+}
+
+.stat-questions .stat-question:first-child {
+    margin-top: unset;
 }
 
 .stat-question-options {
