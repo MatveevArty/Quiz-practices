@@ -13,7 +13,7 @@
 
 .result-image {
     position: absolute;
-    top: 225px;
+    top: 90px;
     z-index: -1;
 }
 
@@ -35,4 +35,9 @@
     font-family: "MuseoSansCyrl-Bold", sans-serif;
     line-height: 190px;
     color: #FFFFFF;
+}
+
+.result-see {
+    margin-top: 80px;
+    margin-left: auto;
 }

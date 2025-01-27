@@ -119,6 +119,80 @@ a.button {
     border: 1px solid #E2DFE7;
 }
 
+/* Ссылка со стрелкой */
+.arrowed-link {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.arrowed-link a {
+    font-size: 17px;
+    line-height: 20px;
+    color: #6933DC;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.arrowed-link a:hover {
+    text-decoration: underline;
+}
+
+.arrowed-link img {
+    width: 8px;
+}
+
+/* Вопросы квиза */
+.common-question-title {
+    font-size: 36px;
+    font-family: "MuseoSansCyrl-Bold", sans-serif;
+    line-height: 43px;
+}
+
+.common-question-title span {
+    color: #6933DC;
+}
+
+.common-question-option {
+    font-size: 20px;
+    line-height: 24px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 13px;
+    align-items: center;
+}
+
+.common-question-option label {
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #6933DC;
+    border-radius: 50%;
+    margin: unset;
+    display: grid;
+    place-content: center;
+}
+
+input[type="radio"]::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    box-shadow: inset 10px 10px #6933DC;
+    transition: .2s ease transform;
+    transform: scale(0);
+}
+
+input[type="radio"]:checked::before {
+    transform: scale(1);
+}
+
 /* Подвал */
 .footer {
     padding: 40px 0;
