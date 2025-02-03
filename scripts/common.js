@@ -1,4 +1,4 @@
-// Парсинг свойств name, lastName и email в адресной строке, иначе переадресация на index.html
+// Парсинг свойств name, lastName и email в адресной строке, иначе переадресация на #/
 function checkUserData() {
     const url = new URL(location.href);
     const name = url.searchParams.get('name');
@@ -6,6 +6,6 @@ function checkUserData() {
     const email = url.searchParams.get('email');
 
     if (!name || !lastName || !email) {
-        location.href = 'index.html';
+        location.href = '#/';
     }
 }

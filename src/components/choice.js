@@ -15,11 +15,11 @@ export class Choice {
             try {
                 this.quizzes = JSON.parse(xhr.responseText);
             } catch (e) {
-                location.href = 'index.html';
+                location.href = '#/';
             }
             this.processQuizzes();
         } else {
-            location.href = 'index.html'; // иначе возврат на первую страницу
+            location.href = '#/'; // иначе возврат на первую страницу
         }
 
     }
@@ -56,7 +56,7 @@ export class Choice {
 
                 // Создание картинки стрелки
                 const choiceOptionImageElement = document.createElement('img')
-                choiceOptionImageElement.setAttribute('src', 'images/arrow.png');
+                choiceOptionImageElement.setAttribute('src', '../../static/images/arrow.png');
                 choiceOptionImageElement.setAttribute('alt', 'Стрелка');
 
                 // Вкладывание элементов согласно правильной вёрстке
@@ -72,7 +72,7 @@ export class Choice {
         const dataId = element.getAttribute('data-id');
 
         if (dataId) {
-            location.href = 'test.html' + location.search + '&id=' + dataId;
+            location.href = '#/test' + location.search + '&id=' + dataId;
         }
     }
 }

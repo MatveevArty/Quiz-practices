@@ -27,14 +27,14 @@ export class Test {
                 try {
                     this.quiz = JSON.parse(xhr.responseText); // Присваивание запарсенного ответа с бэкенда в свойство quiz объекта Test
                 } catch (e) {
-                    location.href = 'index.html';
+                    location.href = '#/';
                 }
                 this.startQuiz(); // Инициализация метода startQuiz при условии корректных получении данных с бэкенда
             } else {
-                location.href = 'index.html';
+                location.href = '#/';
             }
         } else {
-            location.href = 'index.html';
+            location.href = '#/';
         }
     }
 
@@ -254,14 +254,14 @@ export class Test {
             try {
                 result = JSON.parse(xhr.responseText);
             } catch (e) {
-                location.href = 'index.html';
+                location.href = '#/';
             }
             if (result) {
                 console.log(result);
                 location.href = 'result.html?score=' + result.score + '&total=' + result.total;
             }
         } else {
-            location.href = 'index.html';
+            location.href = '#/';
         }
     }
 }
