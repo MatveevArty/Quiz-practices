@@ -60,7 +60,7 @@ export class Choice {
 
                 // Создание картинки стрелки
                 const choiceOptionImageElement = document.createElement('img')
-                choiceOptionImageElement.setAttribute('src', '../../static/images/arrow.png');
+                choiceOptionImageElement.setAttribute('src', '/images/arrow.png');
                 choiceOptionImageElement.setAttribute('alt', 'Стрелка');
 
                 // Вкладывание элементов согласно правильной вёрстке
