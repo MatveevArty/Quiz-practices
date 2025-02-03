@@ -1,9 +1,13 @@
+import {UrlManager} from "../utils/url-manager.js";
+
 export class Choice {
 
     constructor() {
         this.quizzes = [];
+        this.routeParams = UrlManager.getQueryParams();
 
-        checkUserData();
+        // Проверка ввода личных данных на странице form
+        UrlManager.checkUserData(this.routeParams);
 
         // Отправка XMLHttp запроса на бэкенд для получения списка квизов
         const xhr = new XMLHttpRequest();
@@ -72,7 +76,8 @@ export class Choice {
         const dataId = element.getAttribute('data-id');
 
         if (dataId) {
-            location.href = '#/test' + location.search + '&id=' + dataId;
+            location.href = '#/test?name=' + this.routeParams.name + '&lastName=' + this.routeParams.lastName
+                + '&email=' + this.routeParams.email + '&id=' + dataId;
         }
     }
 }
