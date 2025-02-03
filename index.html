@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Айтилогия Quiz</title>
+    <title id="page-title">Айтилогия Quiz</title>
     <link rel="stylesheet" href="styles/common.css">
-    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" id="styles" href="styles/index.css">
 </head>
 <body>
 
@@ -12,31 +12,19 @@
     <div class="container">
         <div class="logo">
             <span><span>Айтилогия</span>Quiz
-                <img src="images/hat-icon.png" alt="Академ шапка">
+                <img src="static/images/hat-icon.png" alt="Академ шапка">
             </span>
         </div>
     </div>
 </header>
 
-<section class="main">
-    <div class="container">
-        <div class="main-content">
-            <h1 class="main-title big-title">Проверь свои знания JavaScript вместе с <span>АйтилогияQuiz</span>!</h1>
-            <div class="main-description">Мы поможем подготовиться к контрольному заданию или тесту по JavaScript!</div>
-            <div class="main-button">
-                <a href="form.html" class="button">Начать тест</a>
-            </div>
-        </div>
-        <div class="main-image common-image">
-            <img src="images/main-image.png" alt="Главная картинка">
-        </div>
-    </div>
-</section>
+<div id="content"></div>
 
 <footer class="footer">
     «АйтилогияQuiz» © Все права защищены / 2022
 </footer>
 
+<script src="src/app.js" type="module"></script>
 
 </body>
 </html>

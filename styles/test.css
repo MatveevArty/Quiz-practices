@@ -115,7 +115,7 @@
 }
 
 .test-timer-clock {
-    background-image: url("../images/timer.png");
+    background-image: url("../static/images/timer.png");
     background-size: cover;
     background-position: center;
     width: 33px;
