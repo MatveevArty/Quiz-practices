@@ -2,21 +2,24 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 
+// Стандартный экспорт модулей из документации "guides/getting-started modules"
 module.exports = {
     entry: './src/app.js',
-    mode: 'development',
+    mode: 'development', // Режим на девелопмент по рекомендации из терминала
     output: {
         filename: 'main.js',
         path: path.resolve(__dirname, 'dist'),
-        clean: true
+        clean: true // Зачистка папки dist при каждой пересборке
     },
 
+    // Запуск сервера посредством вебпак
     devServer: {
         static: '.dist',
         compress: true,
         port: 9000,
     },
 
+    // Плагины для 1) index html, 2) всех темплейтов, стилей, шрифтов и картинок
     plugins: [
         new HtmlWebpackPlugin({
             template: "./index.html"
@@ -32,6 +35,7 @@ module.exports = {
         })
     ],
 
+    // Транспиляция js посредством бабель-модуля
     module: {
         rules: [
             {
