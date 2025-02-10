@@ -1,11 +1,13 @@
 import {UrlManager} from "../utils/url-manager.js";
 import {CustomHttp} from "../services/custom-http.js";
 import config from "../../config/config.js";
+import {Auth} from "../services/auth.js";
 
 export class Choice {
 
     constructor() {
         this.quizzes = [];
+        this.testResult = null;
         this.routeParams = UrlManager.getQueryParams();
 
         this.init();
@@ -14,7 +16,7 @@ export class Choice {
     async init() {
 
         try {
-            const result = await CustomHttp.request(config.host + '/tests')
+            const result = await CustomHttp.request(config.host + '/tests');
 
             if (result) {
                 if (result.error) {
@@ -22,11 +24,29 @@ export class Choice {
                 }
 
                 this.quizzes = result;
-                this.processQuizzes();
             }
         } catch (error) {
-            console.log(error);
+            return console.log(error);
         }
+
+        // Запрос на потенциально уже ранее решенные тесты и их результаты
+        const userInfo = Auth.getUserInfo();
+        if (userInfo) {
+            try {
+                const result = await CustomHttp.request(config.host + '/tests/results?userId=' + userInfo.userId);
+                if (result) {
+                    if (result.error) {
+                        throw new Error(result.error);
+                    }
+
+                    this.testResult = result;
+                }
+            } catch (error) {
+                return console.log(error);
+            }
+        }
+
+        this.processQuizzes();
     }
 
     processQuizzes() {
@@ -58,6 +78,16 @@ export class Choice {
                 // Создание родблока с классом choice-option-arrow для картинки стрелки
                 const choiceOptionArrowElement = document.createElement('div')
                 choiceOptionArrowElement.className = 'choice-option-arrow common-image';
+
+                // Проверка, есть ли уже результаты решённых тестов
+                const result = this.testResult.find(item => item.testId === quiz.id);
+                if (result) {
+                    const choiceOptionResultElement = document.createElement('div')
+                    choiceOptionResultElement.className = 'choice-option-result';
+                    choiceOptionResultElement.innerHTML = '<div>Результат</div><div>' + result.score
+                        + '/' + result.total + '</div>';
+                    choiceOptionElement.appendChild(choiceOptionResultElement);
+                }
 
                 // Создание картинки стрелки
                 const choiceOptionImageElement = document.createElement('img')
