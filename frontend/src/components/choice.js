@@ -6,9 +6,6 @@ export class Choice {
         this.quizzes = [];
         this.routeParams = UrlManager.getQueryParams();
 
-        // Проверка ввода личных данных на странице form
-        UrlManager.checkUserData(this.routeParams);
-
         // Отправка XMLHttp запроса на бэкенд для получения списка квизов
         const xhr = new XMLHttpRequest();
         xhr.open('GET', 'https://testologia.ru/get-quizzes', false);

@@ -1,24 +1,12 @@
 export class Form {
 
-    constructor() {
+    constructor(page) {
 
         this.agreeElement = null; // Запись чекбокса в свойство Form, т.к. он используется в методах init и validateForm
         this.processElement = null; // аналогично с agreeElement
+        this.page = page; // сохраняем параметр page в свойство объекта page
+
         this.fields = [
-            {
-                name: 'name',
-                id: 'name',
-                element: null,
-                regex: /^[А-ЯЁ][а-яё]+\s*$/, // Регулярка для имени
-                valid: false,
-            },
-            {
-                name: 'lastName',
-                id: 'lastname',
-                element: null,
-                regex: /^[А-ЯЁ][а-яе]+\s*$/, // Регулярка для фамилии
-                valid: false,
-            },
             {
                 name: 'email',
                 id: 'email',
@@ -26,8 +14,35 @@ export class Form {
                 // Регулярка для почты
                 regex: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
                 valid: false,
+            },
+            {
+                name: 'password',
+                id: 'password',
+                element: null,
+                // Регулярка для почты
+                regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/,
+                valid: false,
             }
         ];
+
+        // Проверка, если это страница регистрации, то присвоение свойств name и lastName для главного объекта
+        if (this.page === 'signup') {
+            this.fields.unshift({
+                    name: 'name',
+                    id: 'name',
+                    element: null,
+                    regex: /^[А-ЯЁ][а-яё]+\s*$/, // Регулярка для имени
+                    valid: false,
+                },
+                {
+                    name: 'lastName',
+                    id: 'lastname',
+                    element: null,
+                    regex: /^[А-ЯЁ][а-яе]+\s*$/, // Регулярка для фамилии
+                    valid: false,
+                }
+            )
+        }
 
         const that = this; // Объявление константы для использования её ниже с целью "замыкания через другую переменную"
 
@@ -49,11 +64,14 @@ export class Form {
             that.processForm();
         }
 
-        // Нахождение чекбокса по id и присвоение его в переменную, которое есть свойство agreeElement у всего объекта Form
-        this.agreeElement = document.getElementById('agree');
-        // Обработчик события изменения значения чекбокса и инициализация метода validateForm
-        this.agreeElement.onchange = function () {
-            that.validateForm();
+        // Валидация чекбокса для страница регистрации
+        if (this.page === 'signup') {
+            // Нахождение чекбокса по id и присвоение его в переменную, которое есть свойство agreeElement у всего объекта Form
+            this.agreeElement = document.getElementById('agree');
+            // Обработчик события изменения значения чекбокса и инициализация метода validateForm
+            this.agreeElement.onchange = function () {
+                that.validateForm();
+            }
         }
     }
 
@@ -74,8 +92,9 @@ export class Form {
         // Присовение в переменную результата функции every на проверку свойства valid у каждого элемента массива fields
         const validForm = this.fields.every(item => item.valid);
 
-        // Присвоение в переменную результата валидности чекбокса и валидности всех инпутов
-        const isValid = this.agreeElement.checked && validForm;
+        // Присвоение в переменную результата валидности чекбокса и валидности всех инпутов, если это страница регистрации
+        // и присовение результата валидности всех инпутов, если это страница логина
+        const isValid = this.agreeElement ? this.agreeElement.checked && validForm : validForm;
         if (isValid) {
             this.processElement.removeAttribute('disabled'); // Раздизейбл кнопки
         } else {
@@ -84,17 +103,46 @@ export class Form {
         return isValid; // Возвращение true/false для его использования в методе processForm
     }
 
-    processForm() {
+    async processForm() {
         if (this.validateForm()) {
 
-            let paramString = '';
-            // Добавление в строку paramString значения свойства name и value каждого элемента массива fields
-            this.fields.forEach(item => {
-                // Применение тернарного оператора для проверки на первый это элемент цикла или нет
-                paramString += (!paramString ? '?' : '&') + item.name + '=' + item.element.value;
-            });
+            if (this.page === 'signup') {
 
-            location.href = '#/choice' + paramString;
+                try {
+                    const response = await fetch('http://localhost:3000/api/signup', {
+                        method: "POST",
+                        headers: {
+                            'Content-type': 'application/json',
+                            'Accept': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            name: this.fields.find(item => item.name === 'name').element.value,
+                            lastName: this.fields.find(item => item.name === 'lastName').element.value,
+                            email: this.fields.find(item => item.name === 'email').element.value,
+                            password: this.fields.find(item => item.name === 'password').element.value,
+                        })
+                    });
+
+                    // Обработка ошибки
+                    if (response.status < 200 || response.status >= 300) {
+                        throw new Error(response.message);
+                    }
+
+                    const result = await response.json();
+                    if (result) {
+                        if (result.error || !result.user) {
+                            throw new Error(result.message);
+                        }
+
+                        location.href = '#/choice';
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
+
+            } else {
+
+            }
         }
     }
 }
