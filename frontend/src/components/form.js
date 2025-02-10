@@ -10,6 +10,13 @@ export class Form {
         this.processElement = null; // аналогично с agreeElement
         this.page = page; // сохраняем параметр page в свойство объекта page
 
+        // Проверка, залогинен ли уже юзер или нет
+        const accessToken = localStorage.getItem(Auth.accessTokenKey);
+        if (accessToken) {
+            location.href = '#/choice';
+            return; // Завершаем функцию, чтобы всё, что далее не выполнялось
+        }
+
         this.fields = [
             {
                 name: 'email',
