@@ -72,11 +72,11 @@ export class Test {
         // Таймер теста
         const timerElement = document.getElementById('test-timer-clock');
         let seconds = 60;
-        const interval = setInterval(function () {
+        this.interval = setInterval(function () {
             seconds--;
             timerElement.innerText = seconds;
             if (seconds === 0) {
-                clearInterval(interval);
+                clearInterval(this.interval);
                 this.complete();
             }
         }.bind(this), 1000)
@@ -215,6 +215,7 @@ export class Test {
 
         // Завершение выполнения кода ниже при достижении последнего вопроса
         if (this.currentQuestionIndex > this.quiz.questions.length) {
+            clearInterval(this.interval);
             this.complete();
             return;
         }
