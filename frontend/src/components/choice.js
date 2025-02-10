@@ -1,4 +1,6 @@
 import {UrlManager} from "../utils/url-manager.js";
+import {CustomHttp} from "../services/custom-http.js";
+import config from "../../config/config.js";
 
 export class Choice {
 
@@ -6,23 +8,25 @@ export class Choice {
         this.quizzes = [];
         this.routeParams = UrlManager.getQueryParams();
 
-        // Отправка XMLHttp запроса на бэкенд для получения списка квизов
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'https://testologia.ru/get-quizzes', false);
-        xhr.send();
+        this.init();
+    }
 
-        // Если статус запроса успех и есть responseText, то инициализация метода processQuizzes с доп парсингом
-        if (xhr.status === 200 && xhr.responseText) {
-            try {
-                this.quizzes = JSON.parse(xhr.responseText);
-            } catch (e) {
-                location.href = '#/';
+    async init() {
+
+        try {
+            const result = await CustomHttp.request(config.host + '/tests')
+
+            if (result) {
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+
+                this.quizzes = result;
+                this.processQuizzes();
             }
-            this.processQuizzes();
-        } else {
-            location.href = '#/'; // иначе возврат на первую страницу
+        } catch (error) {
+            console.log(error);
         }
-
     }
 
     processQuizzes() {
