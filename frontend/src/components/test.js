@@ -1,4 +1,7 @@
 import {UrlManager} from "../utils/url-manager.js";
+import {CustomHttp} from "../services/custom-http.js";
+import config from "../../config/config.js";
+import {Auth} from "../services/auth.js";
 
 export class Test {
 
@@ -16,26 +19,26 @@ export class Test {
         this.userResult = [];
         this.routeParams = UrlManager.getQueryParams();
 
-        // Проверка ввода личных данных на странице form
-        UrlManager.checkUserData(this.routeParams);
+        this.init();
+    }
+
+    async init() {
 
         // Отправка XMLHttp запроса на бэкенд при условии получения testId c пред страницы choice.html
         if (this.routeParams.id) {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', 'https://testologia.ru/get-quiz?id=' + this.routeParams.id, false);
-            xhr.send();
-            if (xhr.status === 200 && xhr.responseText) {
-                try {
-                    this.quiz = JSON.parse(xhr.responseText); // Присваивание запарсенного ответа с бэкенда в свойство quiz объекта Test
-                } catch (e) {
-                    location.href = '#/';
+            try {
+                const result = await CustomHttp.request(config.host + '/tests/' + this.routeParams.id)
+                if (result) {
+                    if (result.error) {
+                        throw new Error(result.error);
+                    }
+
+                    this.quiz = result;
+                    this.startQuiz();
                 }
-                this.startQuiz(); // Инициализация метода startQuiz при условии корректных получении данных с бэкенда
-            } else {
-                location.href = '#/';
+            } catch (error) {
+                console.log(error);
             }
-        } else {
-            location.href = '#/';
         }
     }
 
@@ -232,32 +235,28 @@ export class Test {
         this.showQuestion();
     }
 
-    complete() {
+    async complete() {
 
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://testologia.ru/pass-quiz?id=' + this.routeParams.id, false);
-
-        // Отправляем данные в формате JSON
-        xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-        xhr.send(JSON.stringify({
-            name: this.routeParams.name,
-            lastName: this.routeParams.lastName,
-            email: this.routeParams.email,
-            results: this.userResult
-        }));
-
-        if (xhr.status === 200 && xhr.responseText) {
-            let result = null;
-            try {
-                result = JSON.parse(xhr.responseText);
-            } catch (e) {
-                location.href = '#/';
-            }
-            if (result) {
-                location.href = '#/result?score=' + result.score + '&total=' + result.total;
-            }
-        } else {
+        const userInfo = Auth.getUserInfo();
+        if (!userInfo) {
             location.href = '#/';
+        }
+
+        try {
+            const result = await CustomHttp.request(config.host + '/tests/' + this.routeParams.id + '/pass',
+                'POST', {
+                    userId: userInfo.userId,
+                    results: this.userResult
+                })
+
+            if (result) {
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+                location.href = '#/result?id=' + this.routeParams.id;
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 }
