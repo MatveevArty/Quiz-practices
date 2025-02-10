@@ -148,6 +148,10 @@ export class Form {
                     }
 
                     Auth.setTokens(result.accessToken, result.refreshToken);
+                    Auth.setUserInfo({
+                        fullName: result.fullName,
+                        userId: result.userId
+                    });
                     location.href = '#/choice';
                 }
             } catch (error) {

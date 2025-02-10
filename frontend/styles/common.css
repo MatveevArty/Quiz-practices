@@ -28,6 +28,12 @@ a {
     margin: 0 auto;
 }
 
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .logo span {
     font-size: 30px;
     color: #6933DC;
@@ -44,6 +50,27 @@ a {
     right: -4%;
     width: 20px;
 }
+
+.profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile-image {
+    width: 33px;
+    margin-right: 5px;
+}
+
+.profile-user {
+    font-size: 18px;
+    line-height: 18px;
+}
+
+.profile-logout {
+    font-size: 12px;
+    line-height: 12px;
+}
+
 /* Заголовок большой */
 .big-title {
     font-family: "MuseoSansCyrl-Bold", sans-serif;
@@ -54,6 +81,7 @@ a {
 .big-title span {
     color: #6933DC;
 }
+
 
 /* Заголовок поменьше */
 .common-title {

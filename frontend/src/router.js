@@ -2,11 +2,19 @@ import {Form} from "./components/form.js";
 import {Choice} from "./components/choice.js";
 import {Test} from "./components/test.js";
 import {Result} from "./components/result.js";
+import {Auth} from "./services/auth.js";
 
 
 export class Router {
 
     constructor() {
+        // Склад переменных для избежания нахождения элементов на страницк несколько раз
+        this.contentElement = document.getElementById('content');
+        this.stylesElement = document.getElementById('styles');
+        this.pageTitle = document.getElementById('page-title');
+        this.profileElement = document.getElementById('profile');
+        this.profileFullNameElement = document.getElementById('profile-full-name');
+
         this.routes = [
             {
                 route: '#/',
@@ -66,8 +74,18 @@ export class Router {
     }
 
     async openRoute() {
+
+        const urlRoute = window.location.hash.split('?')[0];
+
+        // Проверка на логаут и если да, то с выкидыванием из системы, очисткой localStorage и возвращением на главную
+        if (urlRoute === '#/logout') {
+            await Auth.logout();
+            window.location.href = '#/';
+            return;
+        }
+
         const newRoute = this.routes.find(item => {
-            return item.route === window.location.hash.split('?')[0];
+            return item.route === urlRoute;
         });
 
         if (!newRoute) {
@@ -76,14 +94,25 @@ export class Router {
         }
 
         // Задание html элементов конкретной страницы
-        document.getElementById('content').innerHTML =
+        this.contentElement.innerHTML =
             await fetch(newRoute.template).then(response => response.text());
 
         // Задание css стилей конкретной страницы
-        document.getElementById('styles').setAttribute('href', newRoute.styles);
+        this.stylesElement.setAttribute('href', newRoute.styles);
 
         // Задание заголовка страницы в ссылке браузера
-        document.getElementById('page-title').innerText = newRoute.title;
+        this.pageTitle.innerText = newRoute.title;
+
+        const userInfo = Auth.getUserInfo();
+        const accessToken = localStorage.getItem(Auth.accessTokenKey);
+
+        // Показ и скрытие блока с залогиненным юзером
+        if (userInfo && accessToken) {
+            this.profileElement.style.display = 'flex';
+            this.profileFullNameElement.innerText = userInfo.fullName;
+        } else {
+            this.profileElement.style.display = 'none';
+        }
 
         // Запуск функции load со скриптами для конкретной страницы
         newRoute.load();
