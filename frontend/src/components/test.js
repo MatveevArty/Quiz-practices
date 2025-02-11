@@ -119,7 +119,7 @@ export class Test {
         // Вёрстка родблока, радио-инпута и лейбла для каждого варианта ответа
         activeQuestion.answers.forEach(answer => {
             const optionElement = document.createElement('div');
-            optionElement.className = 'test-question-option'
+            optionElement.className = 'test-question-option common-question-option'
 
             // Добавляем id ответа в переменную во избежание ошибок, т.к. это значение используется не раз далее
             const inputId = 'answer-' + answer.id;

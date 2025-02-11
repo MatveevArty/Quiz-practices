@@ -3,6 +3,7 @@ import {Choice} from "./components/choice.js";
 import {Test} from "./components/test.js";
 import {Result} from "./components/result.js";
 import {Auth} from "./services/auth.js";
+import {Stat} from "./components/stat.js";
 
 
 export class Router {
@@ -70,6 +71,15 @@ export class Router {
                     new Result();
                 }
             },
+            {
+                route: '#/stat',
+                title: 'Статистика теста',
+                template: 'templates/stat.html',
+                styles: 'styles/stat.css',
+                load: () => {
+                    new Stat();
+                }
+            }
         ]
     }
 
